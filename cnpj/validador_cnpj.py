@@ -7,8 +7,8 @@ def validador_cnpj(cnpj):
         return "CNPJ inválido, Tem que ter 14 digítos."
     
     # checa se todos carac. sao núm.
-    if not titulo.isdigit():
+    if not cnpj.isdigit():
         return "CNPJ inaválido: deve ter apenas números."
     
-    digitos 
+    sequencial = cnpj[:12]
 
