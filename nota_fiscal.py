@@ -1,19 +1,19 @@
-# Definição NF-e
+# Validador de Nota Fiscal Eletrônica (NFe)
 def validar_nota_fiscal(chave):
-    # removendo.
-    chave = chave.replace(" ", " ").replace("-", "")
+    chave = chave.replace(" ", "").replace("-", "")
 
-    # Checa se tem 44 digitos.
+    # Verificar se a chave tem 44 caracteres e é composta apenas por dígitos
     if len(chave) != 44:
-        return "Nota fiscal Inválida, Tem que ter 44 digitos."
-    # Verifica se todos são num.
-    if not chave.isdigit():
-        return "Nota fiscal inválida,Tem que ter apenas números."
+        return False
 
-    # separando.
+    # Verificar se a chave é composta apenas por dígitos
+    if not chave.isdigit():
+        return False
+
+    # Cálculo do dígito verificador
     digitos = chave[:43]
 
-    # calculo.
+    # Atribuir pesos para cada posição dos dígitos
     peso = [
         2,
         3,
@@ -59,29 +59,22 @@ def validar_nota_fiscal(chave):
         3,
         4,
     ]
+
     soma = 0
 
-    # multiplica.
+    # Multiplicar cada dígito pelo seu peso correspondente e somar os resultados
     for i in range(43):
         soma += int(digitos[i]) * peso[i]
 
-    # resto divisao.
+    # Calcular o dígito verificador
     resto = soma % 11
 
-    # aplicação da regra.
     if resto < 2:
         dv_calculado = 0
     else:
         dv_calculado = 11 - resto
 
-    dv_real = int(chave[43])  # último dígito dacgave
+    # Comparar o dígito verificador calculado com o dígito verificador real (último dígito da chave)
+    dv_real = int(chave[43])
 
-    if dv_calculado == dv_real:
-        return "Nota Fiscal VÁLIDA!"
-    else:
-        return "Nota Fiscal INVÁLIDA!"
-
-
-# teste
-chave = input("Digite a chave da Nota Fiscal (44 dígitos): ")
-print(validar_nota_fiscal(chave))
+    return dv_calculado == dv_real
